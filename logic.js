@@ -1,28 +1,45 @@
-const sheetURL = "https://script.google.com/macros/s/AKfycbwWbgbpm-LOURaydVpwsy_bvfIyMokjBgKKfs4iIQtpotlRIk8ebj1qBmoItq742nN0Ig/exec"; // Replace this with your Google Apps Script URL
+const sheetURL = "https://script.google.com/macros/s/AKfycbwWbgbpm-LOURaydVpwsy_bvfIyMokjBgKKfs4iIQtpotlRIk8ebj1qBmoItq742nN0Ig/exec";
 
 async function fetchData() {
   try {
     const response = await fetch(sheetURL);
     const data = await response.json();
-    displayData(data);
+    createButtons(data);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 }
 
-function displayData(data) {
+function createButtons(data) {
   const container = document.getElementById("data-container");
+  
   data.forEach(item => {
-    const nameElement = document.createElement("div");
-    nameElement.classList.add("name");
-    nameElement.textContent = item.name;
+    // Create a button for each applicant name (Column C)
+    const button = document.createElement("button");
+    button.textContent = item.applicant;
+    button.classList.add("applicant-button");
     
-    const infoElement = document.createElement("div");
-    infoElement.classList.add("info");
-    infoElement.textContent = item.info;
+    // Add an event listener for when the button is clicked
+    button.addEventListener("click", () => {
+      displayData(item.data);  // Pass the corresponding data to the displayData function
+    });
     
-    container.appendChild(nameElement);
-    container.appendChild(infoElement);
+    container.appendChild(button);
+  });
+}
+
+function displayData(data) {
+  const displayContainer = document.getElementById("display-container");
+  displayContainer.innerHTML = '';  // Clear previous content
+  
+  // Create and display all the relevant columns (A to I)
+  const columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+  
+  columns.forEach((col, index) => {
+    const dataElement = document.createElement("div");
+    dataElement.classList.add("data-row");
+    dataElement.textContent = `Column ${col}: ${Object.values(data)[index]}`;
+    displayContainer.appendChild(dataElement);
   });
 }
 
