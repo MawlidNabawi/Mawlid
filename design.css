@@ -1,1 +1,12 @@
+#data-container {
+  padding: 20px;
+}
 
+.name {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.info {
+  margin-left: 10px;
+}
