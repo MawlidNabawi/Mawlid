@@ -44,3 +44,15 @@ function displayData(data) {
 }
 
 window.onload = fetchData;
+
+async function fetchData() {
+  console.log("Fetching data from Google Apps Script..."); // Debug log
+  try {
+    const response = await fetch(sheetURL);
+    const data = await response.json();
+    console.log("Data received:", data);  // Check if data is returned correctly
+    createButtons(data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
