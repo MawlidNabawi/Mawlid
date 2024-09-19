@@ -1,11 +1,29 @@
-function doGet() {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Sheet1'); // Change 'Sheet1' to your sheet name
-  const dataRange = sheet.getDataRange().getValues();
-  const data = dataRange.map(row => ({
-    c: row[2], // Column C (Button text)
-    details: [row[0], row[1], row[3], row[4], row[5], row[6], row[7], row[8]] // Columns A, B, D, E, F, G, H, I
-  }));
-  const json = JSON.stringify(data);
+const sheetURL = "https://script.google.com/macros/s/AKfycbwWbgbpm-LOURaydVpwsy_bvfIyMokjBgKKfs4iIQtpotlRIk8ebj1qBmoItq742nN0Ig/exec"; // Replace this with your Google Apps Script URL
 
-  return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON);
+async function fetchData() {
+  try {
+    const response = await fetch(sheetURL);
+    const data = await response.json();
+    displayData(data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 }
+
+function displayData(data) {
+  const container = document.getElementById("data-container");
+  data.forEach(item => {
+    const nameElement = document.createElement("div");
+    nameElement.classList.add("name");
+    nameElement.textContent = item.name;
+    
+    const infoElement = document.createElement("div");
+    infoElement.classList.add("info");
+    infoElement.textContent = item.info;
+    
+    container.appendChild(nameElement);
+    container.appendChild(infoElement);
+  });
+}
+
+window.onload = fetchData;
