@@ -1,1 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>تخطيط للمولد النبوي</title>
+</head>
+<body>
+  <h1>Names List</h1>
+  <div id="data"></div>
+  <script>
+    const url = https://script.google.com/macros/s/AKfycbwkk3i-PWpJ5-5p-ErJOVpRY4cqW1LK4GRlBAWSa1ni/dev
 
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const dataDiv = document.getElementById('data');
+        data.forEach(row => {
+          const p = document.createElement('p');
+          p.textContent = row.join(' - ');
+          dataDiv.appendChild(p);
+        });
+      });
+  </script>
+</body>
+</html>
